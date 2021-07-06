@@ -13,17 +13,16 @@ Any PRs are always welcome!
 
 ### Dependencies
 
-Ansible v2.9
+Ansible v2.9 is recommended , but older ansible should work  
 Direct connectivity to:
   - github.com (kadalu.io)
   - pypi.org (openshift/kubernetes pip modules)
 
 ### Installing
 
-# Clone this repo
 git clone git@github.com:kadalu/kadalu-ansible.git
 
-### Executing program
+### Execution
 
 ```
 # Adjust your inventory
@@ -52,14 +51,10 @@ so you can obtain the relevant binaries/pip modules.
 
 ## Authors
 
+- Strahil Nikolov 
 ```
-# Strahil Nikolov 
-Slack:
----> https://app.slack.com/client/TGX174QDQ/CGWT9RFFD/user_profile/U0278G3CD5W
----> https://app.slack.com/client/TGX174QDQ/learning-slack/user_profile/U026THB01SB
-E-mail:
----> hunter86_bg@yahoo.com
----> strahil.nikolov@gmail.com
+strahil.nikolov@gmail.com ---> https://app.slack.com/client/TGX174QDQ/CGWT9RFFD/user_profile/U0278G3CD5W
+hunter86_bg@yahoo.com  ------> https://app.slack.com/client/TGX174QDQ/learning-slack/user_profile/U026THB01SB
 ```
 
 ## License
