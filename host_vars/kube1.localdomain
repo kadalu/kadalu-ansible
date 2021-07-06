@@ -1,0 +1,7 @@
+# You can put variables for kube1.localdomain
+# If you target groupX , you will end with user=user2
+# as ansible merges vars per host (no matter of the targeted group)
+# [groupX]
+# hostA user=user1
+# [groupZ]
+# hostB user=user2
