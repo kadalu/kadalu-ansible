@@ -54,7 +54,7 @@ so you can obtain the relevant binaries/pip modules.
 - Strahil Nikolov 
 ```
 strahil.nikolov@gmail.com ---> https://app.slack.com/client/TGX174QDQ/CGWT9RFFD/user_profile/U0278G3CD5W
-hunter86_bg@yahoo.com  ------> https://app.slack.com/client/TGX174QDQ/learning-slack/user_profile/U026THB01SB
+hunter86_bg@yahoo.com  ------> https://app.slack.com/client/TGX174QDQ/user_profile/U026THB01SB
 ```
 
 ## License
