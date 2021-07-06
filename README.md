@@ -19,9 +19,9 @@ Direct connectivity to:
   - pypi.org (openshift/kubernetes pip modules)
 
 ### Installing
-
+```
 git clone git@github.com:kadalu/kadalu-ansible.git
-
+```
 ### Execution
 
 ```
