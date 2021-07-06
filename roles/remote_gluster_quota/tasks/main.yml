@@ -1,0 +1,11 @@
+---
+# We need a task for checking openshift or kubernetes is installed
+#
+
+
+- include_tasks: kube_quota.yml
+  #when we got kubernetes
+
+
+- include_role:
+    name: deploy_kadalu_operator

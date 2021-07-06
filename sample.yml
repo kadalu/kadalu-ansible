@@ -1,0 +1,9 @@
+---
+- name: Setting up Quota prerequisites for external gluster vols
+  become: True
+  become_method: 'sudo'
+  hosts: kubernetes_nodes
+  gather_facts: True
+ 
+  roles:
+    - remote_gluster_quota

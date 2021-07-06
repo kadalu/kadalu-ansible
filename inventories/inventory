@@ -1,0 +1,10 @@
+[local]
+localhost ansible_become=false ansible_connection=local
+
+[gluster_servers]
+kubluster.localdomain ansible_ssh_user=snikolov
+
+[kubernetes_nodes]
+kube1.localdomain ansible_ssh_user=snikolov
+kube2.localdomain ansible_ssh_user=snikolov
+kube3.localdomain ansible_ssh_user=snikolov

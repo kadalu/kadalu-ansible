@@ -1,0 +1,96 @@
+---
+# We can use native gluster quota
+# but we need to take the private key locally and base64 encode it
+# also the public key has to be deployed to the root user's authorized keys
+# on all storage nodes
+- name: Check if ssh key exists locally named "{{ ssh_key_name }}"
+  stat:
+    path: "{{ role_path }}/files/{{ ssh_key_name }}"
+  delegate_to: localhost
+  register: check_local_key
+  become: False
+
+  #- name: Generate an ssh key pair
+  #  shell:
+  #    cmd: "echo y | ssh-keygen -t rsa -b 4096 -f {{ role_path }}/files/{{ ssh_key_name }}"
+  #  delegate_to: localhost
+  #  connection: local
+  #  become: False
+  #  when: not check_local_key.stat.exists
+
+- name: Generate an ssh key pair
+  openssh_keypair:
+    path: "{{ role_path }}/files/{{ ssh_key_name }}"
+    size: 4096
+    type: rsa
+    comment: "created via kube_quota"
+  delegate_to: localhost
+  become: False
+  when: not check_local_key.stat.exists
+  run_once: True
+
+- name: Ensure that .ssh exists
+  file:
+    owner: 'root'
+    group: 'root'
+    mode: '0700'
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+  loop:
+    - { path: '/root/.ssh' , state: directory }
+
+
+- name: Copy the private ssh key to kubernetes nodes
+  copy:
+    dest: "{{ privatekey_location }}"
+    owner: 'root'
+    group: 'root'
+    mode: '0400'
+    src: "files/{{ ssh_key_name }}"
+
+- name: Add ssh public key to the storage nodes
+  authorized_key:
+    comment: 'quota_access'
+    key: "{{ lookup('file', 'files/{{ ssh_key_name }}.pub') }}"
+    user: "{{ gluster_quota_user }}"
+  delegate_to: "{{ item }}"
+  loop: "{{ groups.gluster_servers }}"
+
+- name: Ensure pip3 exists
+  package:
+    name: 'python3-pip'
+    state: 'present'
+
+# Due to bug in kubernetes 12.00+ we need to use an older version
+# Installing just openshift will bump the kubernetes version
+- name: Install mandatory pip3 modules
+  pip:
+    state: 'present'
+    name: 
+    - 'openshift==0.11.0'
+    - 'kubernetes==11.0.0'
+    
+      
+- name: Ensure kadalu namespace exists
+  k8s:
+    name: 'kadalu'
+    kind: 'namespace'
+    state: present
+  run_once: true
+
+# We are reading the private key locally and then b64 encode it
+# before providing it to the k8s module
+# On change of the key - the secret is updated 
+- name: Create kubernetes secret with ssh user and key
+  k8s:
+    state: present
+    definition:
+      kind: 'Secret'
+      type: 'Opaque'
+      metadata:
+        name: 'glusterquota-ssh-secret'
+        namespace: 'kadalu'
+      data:  
+        gluster-quota-ssh-username: '{{ gluster_quota_user | b64encode }}'
+        ssh-privatekey: '{{ lookup("file", "files/{{ ssh_key_name  }}") | b64encode }}'
+  run_once: true

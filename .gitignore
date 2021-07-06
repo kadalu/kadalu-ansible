@@ -1,0 +1,6 @@
+**/*.pyc
+**/*.retry
+ansible.cfg
+collections/*
+!collections/requirements.yml
+roles/remote_gluster_quota/files/*key*

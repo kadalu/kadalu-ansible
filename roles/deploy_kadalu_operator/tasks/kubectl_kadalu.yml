@@ -1,0 +1,20 @@
+---
+- name: deploy Kadalu Kubectl plugin
+  get_url:
+    mode: '0555'
+    owner: 'root'
+    group: 'root'
+    url: 'https://github.com/kadalu/kadalu/releases/latest/download/kubectl-kadalu'
+    dest: '/usr/local/bin/'
+  register: kadalu_download_status
+
+# We don't want a handler as the role becomes more complex
+# more stuff can break and handlers are not enforced by default
+- name: Deploy Kadalu operator
+  command:
+    cmd: 'kubectl kadalu install'
+  when: kadalu_download_status.changed
+  register: k8s_oper_install
+  failed_when:
+  - 'k8s_oper_install.rc > 0'
+  changed_when: '"Kadalu operator already installed" not in k8s_oper_install.stdout'

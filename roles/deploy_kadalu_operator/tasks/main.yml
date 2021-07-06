@@ -1,0 +1,6 @@
+---
+# We need a way to identify if we got kubernetes or openshift
+#
+#
+- include_tasks: kubectl_kadalu.yml
+  #when kubernetes
