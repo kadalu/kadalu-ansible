@@ -4,6 +4,8 @@
   become_method: 'sudo'
   hosts: kubernetes_nodes
   gather_facts: True
+  vars:
+    remote_gluster_volume: 'kubernetes'
  
   roles:
     - remote_gluster_quota

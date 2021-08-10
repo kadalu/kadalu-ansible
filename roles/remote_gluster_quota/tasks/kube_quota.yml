@@ -23,7 +23,7 @@
     path: "{{ role_path }}/files/{{ ssh_key_name }}"
     size: 4096
     type: rsa
-    comment: "created via kube_quota"
+    comment: "created via kadalu-ansible"
   delegate_to: localhost
   become: False
   when: not check_local_key.stat.exists
@@ -55,6 +55,18 @@
     user: "{{ gluster_quota_user }}"
   delegate_to: "{{ item }}"
   loop: "{{ groups.gluster_servers }}"
+
+ - name: Ensure gluster native quota is enabled on {{ remote_gluster_volume }}
+    command:
+      cmd: 'gluster --mode=script volume quota {{ remote_gluster_volume }} enable'
+    delegate_to: "{{ item }}"                                           
+    loop: "{{ groups.gluster_servers }}" 
+    run_once: True
+    register: quota_status
+    failed_when:
+    - 'quota_status.rc > 0'
+    - '"is already enabled" not in quota_status.stderr'
+    changed_when: '"volume quota : success" in quota_status.stdout'
 
 - name: Ensure pip3 exists
   package:
