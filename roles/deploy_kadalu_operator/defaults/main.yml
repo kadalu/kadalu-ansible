@@ -1,3 +1,9 @@
 ---
 # defaults file for deploy_kadalu_operator
-kadalu_branch: 'devel'
+stable:
+  - 'https://github.com/kadalu/kadalu/releases/latest/download/kadalu-operator.yaml'
+  - 'https://github.com/kadalu/kadalu/releases/latest/download/csi-nodeplugin.yaml'
+
+devel:
+  - 'https://raw.githubusercontent.com/kadalu/kadalu/devel/manifests/kadalu-operator.yaml'
+  - 'https://raw.githubusercontent.com/kadalu/kadalu/devel/manifests/csi-nodeplugin.yaml'

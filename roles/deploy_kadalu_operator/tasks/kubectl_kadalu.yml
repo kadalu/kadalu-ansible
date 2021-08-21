@@ -25,19 +25,13 @@
   block:
   - name: Obtain the yaml defintions
     get_url:
-      url: "{{ item.url }}"
-      dest:  "{{ item.dest }}"
-    loop:
-    - { url: 'https://raw.githubusercontent.com/kadalu/kadalu/{{ kadalu_branch }}/manifests/kadalu-operator.yaml', 
-        dest: '/tmp/kadalu-operator.yaml' }
-    - { url: 'https://raw.githubusercontent.com/kadalu/kadalu/{{ kadalu_branch }}/manifests/csi-nodeplugin.yaml', 
-        dest: '/tmp/csi-nodeplugin.yaml' }
+      url: "{{ item }}"
+      dest:  "/tmp/{{ item | basename }}"
+    loop: "{{ stable }}"
     
   - name: Apply the 2 yaml files
     k8s:
       state: present
-      src: "{{ item }}"
-    loop:
-    - '/tmp/kadalu-operator.yaml'
-    - '/tmp/csi-nodeplugin.yaml'
+      src: "/tmp/{{ item |basename }}"
+    loop: "{{ stable }}"
     run_once: True
