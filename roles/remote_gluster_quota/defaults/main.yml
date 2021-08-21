@@ -2,8 +2,10 @@
 # It is easier to override your vars if they are in the role defualts
 # This user needs to be able to run gluster cli
 gluster_quota_user: 'root'
+
 # Location where we store the private keys on the kube master nodes
 privatekey_location: '/root/.ssh/gluster_ssh'
+
 # Don't forget ot add this name to the .gitignore
 # Otherwise everyone with access to the repo will be able to obtain it
 ssh_key_name: 'gluster_key'
