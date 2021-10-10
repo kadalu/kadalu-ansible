@@ -35,3 +35,5 @@
       src: "/tmp/{{ item |basename }}"
     loop: "{{ stable }}"
     run_once: True
+    loop_control:
+      pause: 300
